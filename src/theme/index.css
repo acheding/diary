@@ -1,12 +1,25 @@
 :root {
-  /* 秋天*/
-  --el-color-primary: #ed9d87;
-  --el-color-primary-light-9: #fbf6f1;
-  /* --el-border-color: #e0ccc7; */
-  --el-border-color-hover: #d4b7b0;
+  /* autumn */
+  /* --el-color-primary: #ed9d87;
+  --el-color-primary-light-9: #fbf6f1; */
+  /* --el-border-color: #e0ccc7;  此项暂时不用*/
+  /* --el-border-color-hover: #d4b7b0;
   --el-color-primary-light-7: #d5bdb7;
   --el-color-primary-light-3: #e8a998;
   --el-color-primary-light-5: #e8a998;
   --el-color-primary-light-8: #e8a998;
-  --el-color-primary-dark-2: #e8a998;
+  --el-color-primary-dark-2: #e8a998; */
+
+  /* spring */
+  --el-color-primary: #60b96d;
+  --el-border-color-hover: #accbb1;
+  --el-color-primary-light-7: #accbb1;
+  /* 按钮点击完颜色 */
+  --el-color-primary-light-3: #8bbb93;
+  --el-color-primary-light-5: #8bbb93;
+  --el-color-primary-light-8: #8bbb93;
+  /* 日历单元格背景色 */
+  --el-color-primary-light-9: #f5fdf6;
+  /* 按钮点击瞬间颜色 */
+  --el-color-primary-dark-2: #8bbb93;
 }
