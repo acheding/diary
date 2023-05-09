@@ -1,14 +1,14 @@
 <script setup>
 import
-  {
-    computed,
-    reactive,
-    ref,
-    onBeforeMount,
-    toRaw,
-    watch,
-    nextTick,
-  } from "vue";
+{
+  computed,
+  reactive,
+  ref,
+  onBeforeMount,
+  toRaw,
+  watch,
+  nextTick,
+} from "vue";
 import axios from "axios";
 import time from "@/utils/time";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -384,11 +384,10 @@ const beforeUpload = () =>
 
   <div class="detail" v-loading="state.loading">
     <div v-for="item in JSON.parse(JSON.stringify(details))">
-      <el-alert :closable="false" :type="
-        ['success', 'info', 'error', 'warning'][Math.floor(Math.random() * 4)]
-      " @click="
-        showOperations(item.id, hasComment(item.id), hasPicture(item.id))
-      ">
+      <el-alert :closable="false" :type="['success', 'info', 'error', 'warning'][Math.floor(Math.random() * 4)]
+        " @click="
+    showOperations(item.id, hasComment(item.id), hasPicture(item.id))
+    ">
         <span>{{ item.event }}</span>
         <span class="time" v-if="item.time" :class="{ 'time-has': hasPicture(item.id) }">
           {{ item.time }}
@@ -406,8 +405,8 @@ const beforeUpload = () =>
         </div>
       </el-alert>
       <div style="margin-top: 8px" v-show="state.showIndex === item.id && currentFileList.length">
-        <el-image v-for="file in currentFileList" :src="file.url" :preview-src-list="currentFilePath(currentFileList)"
-          fit="cover" />
+        <el-image v-for="file in currentFileList" :src="file.url" lazy
+          :preview-src-list="currentFilePath(currentFileList)" fit="cover" />
       </div>
       <div class="comments" v-show="state.showIndex === item.id && oneComment.length" v-loading="state.loading2">
         <div class="oneComment" v-for="(one, index) in JSON.parse(JSON.stringify(oneComment))">
