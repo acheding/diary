@@ -1,17 +1,8 @@
 <script setup>
-import
-{
-  computed,
-  reactive,
-  ref,
-  onBeforeMount,
-  toRaw,
-  watch,
-  nextTick,
-} from "vue";
-import axios from "axios";
-import time from "@/utils/time";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { computed, reactive, ref, onBeforeMount, toRaw, watch, nextTick } from 'vue'
+import axios from 'axios'
+import time from '@/utils/time'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const state = reactive({
   schedules: [],
@@ -22,353 +13,303 @@ const state = reactive({
   loading: false,
   loading2: false,
   loading3: false,
-});
-const form = ref(null);
-const form2 = ref(null);
-const input = ref("");
-const date = ref(time.format(new Date(), "yyyy-MM-dd"));
-const details = ref([]);
-onBeforeMount(async () =>
-{
-  updateSchedules();
-  getALLComments();
-  getAllList();
-});
+})
+const form = ref(null)
+const form2 = ref(null)
+const input = ref('')
+const date = ref(time.format(new Date(), 'yyyy-MM-dd'))
+const details = ref([])
+onBeforeMount(async () => {
+  updateSchedules()
+  getALLComments()
+  getAllList()
+})
 
-const updateSchedules = async () =>
-{
-  state.loading = true;
-  let res = await axios.get("/ache/calendar/get-calendar");
-  state.loading = false;
-  state.schedules = res.data;
-};
+const updateSchedules = async () => {
+  state.loading = true
+  let res = await axios.get('/ache/calendar/get-calendar')
+  state.loading = false
+  state.schedules = res.data
+}
 
 const aSchedule = ref({
-  date: "",
-  event: "",
+  date: '',
+  event: '',
   completed: 0,
-  time: "",
-});
+  time: '',
+})
 
 const comment = ref({
-  comment: "",
+  comment: '',
   pid: null,
-});
+})
 
-const oneComment = ref([]);
-const allComents = ref([]);
+const oneComment = ref([])
+const allComents = ref([])
 
-const displayByEdit = (data) =>
-{
-  aSchedule.value = data;
-  state.showDialog = true;
-};
+const displayByEdit = (data) => {
+  aSchedule.value = data
+  state.showDialog = true
+}
 
 const rules = reactive({
   event: [
     {
       required: true,
-      message: "这天没啥东西写吗",
-      trigger: ["blur", "change"],
+      message: '这天没啥东西写吗',
+      trigger: ['blur', 'change'],
     },
   ],
-});
+})
 
 const rules2 = reactive({
-  comment: [{ required: true, message: "评论不能为空哦", trigger: ["blur"] }],
-});
+  comment: [{ required: true, message: '评论不能为空哦', trigger: ['blur'] }],
+})
 
-const editSchedule = () =>
-{
-  form.value.validate(async (valid, fields) =>
-  {
+const editSchedule = () => {
+  form.value.validate(async (valid, fields) => {
     if (valid) {
-      await axios.put("/ache/calendar/edit-calendar", aSchedule.value);
-      ElMessage.success("编辑好咯");
-      updateSchedules();
-      state.showDialog = false;
+      await axios.put('/ache/calendar/edit-calendar', aSchedule.value)
+      ElMessage.success('编辑好咯')
+      updateSchedules()
+      state.showDialog = false
     }
-  });
-};
+  })
+}
 
-const deleteSchedule = async (id) =>
-{
-  ElMessageBox.confirm("真的要删除这段吗？", "删除", {
+const deleteSchedule = async (id) => {
+  ElMessageBox.confirm('真的要删除这段吗？', '删除', {
     distinguishCancelAndClose: true,
-    confirmButtonText: "真的",
-    cancelButtonText: "假的",
-  }).then(async () =>
-  {
-    await axios.delete("/ache/calendar/delete-calendar", {
+    confirmButtonText: '真的',
+    cancelButtonText: '假的',
+  }).then(async () => {
+    await axios.delete('/ache/calendar/delete-calendar', {
       params: { id: parseInt(id) },
-    });
-    ElMessage.success("删掉这段话咯");
-    updateSchedules();
-  });
-};
+    })
+    ElMessage.success('删掉这段话咯')
+    updateSchedules()
+  })
+}
 
-const exchange = async (item) =>
-{
-  state.exchangeArr.push(item.id);
+const exchange = async (item) => {
+  state.exchangeArr.push(item.id)
   if (state.exchangeArr.length === 1) {
     ElMessage({
-      message:
-        "当前选择的是：" +
-        (item.event.length > 12
-          ? item.event.substring(0, 12) + "..."
-          : item.event),
-    });
+      message: '当前选择的是：' + (item.event.length > 12 ? item.event.substring(0, 12) + '...' : item.event),
+    })
   } else if (state.exchangeArr.length === 2) {
     ElMessage({
-      message:
-        "与之交换的为：" +
-        (item.event.length > 12
-          ? item.event.substring(0, 12) + "..."
-          : item.event),
-    });
-    await axios.put("/ache/calendar/exchange-calendar", {
+      message: '与之交换的为：' + (item.event.length > 12 ? item.event.substring(0, 12) + '...' : item.event),
+    })
+    await axios.put('/ache/calendar/exchange-calendar', {
       id1: state.exchangeArr[0],
       id2: state.exchangeArr[1],
-    });
+    })
     ElMessage({
-      type: "success",
-      message: "位置交换成功啦",
-    });
-    updateSchedules();
-    state.exchangeArr = [];
+      type: 'success',
+      message: '位置交换成功啦',
+    })
+    updateSchedules()
+    state.exchangeArr = []
   }
-};
+}
 
-const addSchedule = async () =>
-{
+const addSchedule = async () => {
   if (input.value) {
     let data = {
       date: date.value,
       event: input.value,
       completed: 0,
-      time: time.format(new Date(), "hh:mm"),
-    };
-    await axios.post("/ache/calendar/add-calendar", data);
-    updateSchedules();
+      time: time.format(new Date(), 'hh:mm'),
+    }
+    await axios.post('/ache/calendar/add-calendar', data)
+    updateSchedules()
     // let tempDate = new Date(date.value)
     // date.value = new Date(tempDate.getTime() + 86400000)
     // date.value = date.value.getFullYear() + '-' + (date.value.getMonth() + 1 < 10 ? '0' + (date.value.getMonth() + 1) : date.value.getMonth() + 1) + '-' + date.value.getDate()
-    input.value = "";
-    ElMessage.success("添加成功啦");
+    input.value = ''
+    ElMessage.success('添加成功啦')
   } else {
-    ElMessage.error(props.owner.name + "没啥东西写吗");
+    ElMessage.error(props.owner.name + '没啥东西写吗')
   }
-};
-const getSchedules = computed(() =>
-{
-  return function (data)
-  {
-    let theDay = [];
-    state.schedules.find((item) =>
-    {
+}
+const getSchedules = computed(() => {
+  return function (data) {
+    let theDay = []
+    state.schedules.find((item) => {
       if (item.date === data.day) {
-        theDay.push(item);
+        theDay.push(item)
       }
-    });
-    return theDay;
-  };
-});
+    })
+    return theDay
+  }
+})
 
-const showDetails = (data) =>
-{
+const showDetails = (data) => {
   if (data)
-    details.value = state.schedules.filter((item) =>
-    {
-      return item.date === data.day;
-    });
-  date.value = data.day;
-};
+    details.value = state.schedules.filter((item) => {
+      return item.date === data.day
+    })
+  date.value = data.day
+}
 
 watch(
   () => state.schedules,
   () => showDetails({ day: date.value })
-);
+)
 
-const showOperations = async (id, len, boolean) =>
-{
+const showOperations = async (id, len, boolean) => {
   if (state.showIndex === id) {
-    state.showIndex = null;
+    state.showIndex = null
   } else {
-    state.showIndex = id;
-    oneComment.value = [];
-    if (len) updateComments(id);
-    currentFileList.value = [];
-    if (boolean) getCurrentList();
+    state.showIndex = id
+    oneComment.value = []
+    if (len) updateComments(id)
+    currentFileList.value = []
+    if (boolean) getCurrentList()
   }
-};
+}
 
-const updateComments = async (id) =>
-{
-  state.loading2 = true;
-  let res = await axios.get("/ache/calendar/get-comments", {
+const updateComments = async (id) => {
+  state.loading2 = true
+  let res = await axios.get('/ache/calendar/get-comments', {
     params: { pid: id },
-  });
-  state.loading2 = false;
-  oneComment.value = res.data;
-};
+  })
+  state.loading2 = false
+  oneComment.value = res.data
+}
 
-const addComment = () =>
-{
-  form2.value.validate(async (valid, fields) =>
-  {
+const addComment = () => {
+  form2.value.validate(async (valid, fields) => {
     if (valid) {
-      await axios.post("/ache/calendar/add-comment", comment.value);
-      state.showDialog2 = false;
-      updateComments(aSchedule.value.id);
-      getALLComments();
+      await axios.post('/ache/calendar/add-comment', comment.value)
+      state.showDialog2 = false
+      updateComments(aSchedule.value.id)
+      getALLComments()
     }
-  });
-};
+  })
+}
 
-const displayByComment = (data) =>
-{
-  aSchedule.value = data;
-  comment.value.pid = data.id;
-  comment.value.comment = "";
-  state.showDialog2 = true;
-  nextTick(() => form2.value.resetFields());
-};
+const displayByComment = (data) => {
+  aSchedule.value = data
+  comment.value.pid = data.id
+  comment.value.comment = ''
+  state.showDialog2 = true
+  nextTick(() => form2.value.resetFields())
+}
 
-const deleteComment = async (id, pid) =>
-{
-  await axios.delete("/ache/calendar/delete-comment", {
+const deleteComment = async (id, pid) => {
+  await axios.delete('/ache/calendar/delete-comment', {
     params: { id: parseInt(id) },
-  });
-  updateComments(pid);
-  getALLComments();
-  oneComment.value = res.data;
-};
+  })
+  updateComments(pid)
+  getALLComments()
+  oneComment.value = res.data
+}
 
-const getALLComments = async () =>
-{
-  let res = await axios.get("/ache/calendar/get-comments");
-  allComents.value = res.data;
-};
+const getALLComments = async () => {
+  let res = await axios.get('/ache/calendar/get-comments')
+  allComents.value = res.data
+}
 
-const hasComment = computed(() =>
-{
-  return function (id)
-  {
-    let map = 0;
-    allComents.value.find((item) =>
-    {
-      if (item.pid === id) map++;
-    });
-    return map;
-  };
-});
+const hasComment = computed(() => {
+  return function (id) {
+    let map = 0
+    allComents.value.find((item) => {
+      if (item.pid === id) map++
+    })
+    return map
+  }
+})
 
-const props = defineProps({ owner: Object });
+const props = defineProps({ owner: Object })
 const cookie = ref({
-  "Authorization": props.owner.user + "=" + props.owner.pwd,
-});
+  Authorization: props.owner.user + '=' + props.owner.pwd,
+})
 
-const currentFileList = ref([]);
-const upload = ref(null);
-const drawer = ref(false);
-const allFileList = ref([]);
-const getAllList = async () =>
-{
-  let res = await axios.get("/ache/calendar/get-picture");
-  allFileList.value = res.data;
-};
-const hasPicture = computed(() =>
-{
-  return function (id)
-  {
-    return allFileList.value.find((item) =>
-    {
-      if (item.pid === id) return true;
-    });
-  };
-});
-const key = ref(0);
-const onRemove = async (file) =>
-{
-  await axios.delete("/ache/calendar/delete-picture", {
+const currentFileList = ref([])
+const upload = ref(null)
+const drawer = ref(false)
+const allFileList = ref([])
+const getAllList = async () => {
+  let res = await axios.get('/ache/calendar/get-picture')
+  allFileList.value = res.data
+}
+const hasPicture = computed(() => {
+  return function (id) {
+    return allFileList.value.find((item) => {
+      if (item.pid === id) return true
+    })
+  }
+})
+const key = ref(0)
+const onRemove = async (file) => {
+  await axios.delete('/ache/calendar/delete-picture', {
     params: { id: file.id, name: file.name },
-  });
-  counter.value--;
-};
-const beforeRemove = () =>
-{
+  })
+  counter.value--
+}
+const beforeRemove = () => {
   if (state.loading3) {
-    warnDisabled();
-    return false;
+    warnDisabled()
+    return false
   }
-};
-const disabled = ref(false);
-const warnDisabled = () =>
-{
-  disabled.value = true;
-  setTimeout(() =>
-  {
-    disabled.value = false;
-  }, 1500);
-};
-const currentFilePath = computed(() =>
-{
-  return function (val)
-  {
-    return val.map((item) =>
-    {
-      return item.url;
-    });
-  };
-});
-const getCurrentList = async () =>
-{
-  let res = await axios.get("/ache/calendar/get-picture", {
+}
+const disabled = ref(false)
+const warnDisabled = () => {
+  disabled.value = true
+  setTimeout(() => {
+    disabled.value = false
+  }, 1500)
+}
+const currentFilePath = computed(() => {
+  return function (val) {
+    return val.map((item) => {
+      return item.url
+    })
+  }
+})
+const getCurrentList = async () => {
+  let res = await axios.get('/ache/calendar/get-picture', {
     params: { pid: state.showIndex },
-  });
-  currentFileList.value = res.data.map((item) =>
-  {
-    return { name: item.name, url: item.path, id: item.id };
-  });
-};
-const onError = (error) =>
-{
-  alert(error.message);
-};
-const beforeClose = () =>
-{
+  })
+  currentFileList.value = res.data.map((item) => {
+    return { name: item.name, url: item.path, id: item.id }
+  })
+}
+const onError = (error) => {
+  alert(error.message)
+}
+const beforeClose = () => {
   if (state.loading3) {
-    warnDisabled();
+    warnDisabled()
   } else {
-    getAllList();
-    drawer.value = false;
+    getAllList()
+    drawer.value = false
   }
-};
-const counter = ref(0);
-const onSuccess = (response, uploadFile, uploadFiles) =>
-{
-  counter.value++;
+}
+const counter = ref(0)
+const onSuccess = (response, uploadFile, uploadFiles) => {
+  counter.value++
   if (counter.value === currentFileList.value.length) {
-    getCurrentList();
-    state.loading3 = false;
+    getCurrentList()
+    state.loading3 = false
   }
-};
-const showDrawer = () =>
-{
-  drawer.value = true;
-  counter.value = currentFileList.value.length;
-};
-const beforeUpload = () =>
-{
-  state.loading3 = true;
-};
+}
+const showDrawer = () => {
+  drawer.value = true
+  counter.value = currentFileList.value.length
+}
+const beforeUpload = () => {
+  state.loading3 = true
+}
 </script>
 
 <template>
   <el-calendar v-model="state.value">
     <template #dateCell="{ data }">
       <div :class="{ hasSchedules: getSchedules(data).length }" @click="showDetails(data)">
-        {{ data.day.split("-").slice(2).join("") }}
+        {{ data.day.split('-').slice(2).join('') }}
       </div>
     </template>
   </el-calendar>
@@ -376,18 +317,18 @@ const beforeUpload = () =>
   <div class="input">
     <el-input type="textarea" :rows="7" :placeholder="'记录' + props.owner.name + '的点点滴滴'" v-model="input"></el-input>
     <div class="operation">
-      <el-date-picker :editable="false" v-model="date" type="date" value-format="YYYY-MM-DD" :clearable="false">
-      </el-date-picker>
+      <el-date-picker :editable="false" v-model="date" type="date" value-format="YYYY-MM-DD" :clearable="false"> </el-date-picker>
       <el-button type="primary" @click="addSchedule">添加今日美好</el-button>
     </div>
   </div>
 
   <div class="detail" v-loading="state.loading">
     <div v-for="item in JSON.parse(JSON.stringify(details))">
-      <el-alert :closable="false" :type="['success', 'info', 'error', 'warning'][Math.floor(Math.random() * 4)]
-        " @click="
-    showOperations(item.id, hasComment(item.id), hasPicture(item.id))
-    ">
+      <el-alert
+        :closable="false"
+        :type="['success', 'info', 'error', 'warning'][Math.floor(Math.random() * 4)]"
+        @click="showOperations(item.id, hasComment(item.id), hasPicture(item.id))"
+      >
         <span>{{ item.event }}</span>
         <span class="time" v-if="item.time" :class="{ 'time-has': hasPicture(item.id) }">
           {{ item.time }}
@@ -405,8 +346,7 @@ const beforeUpload = () =>
         </div>
       </el-alert>
       <div style="margin-top: 8px" v-show="state.showIndex === item.id && currentFileList.length">
-        <el-image v-for="file in currentFileList" :src="file.url" lazy
-          :preview-src-list="currentFilePath(currentFileList)" fit="cover" />
+        <el-image v-for="file in currentFileList" :src="file.url" lazy :preview-src-list="currentFilePath(currentFileList)" fit="cover" />
       </div>
       <div class="comments" v-show="state.showIndex === item.id && oneComment.length" v-loading="state.loading2">
         <div class="oneComment" v-for="(one, index) in JSON.parse(JSON.stringify(oneComment))">
@@ -423,8 +363,14 @@ const beforeUpload = () =>
     </template>
     <el-form :model="aSchedule" ref="form" :rules="rules" :label-width="52">
       <el-form-item label="日期" prop="date">
-        <el-date-picker :editable="false" v-model="aSchedule.date" type="date" placeholder="选择日期"
-          value-format="YYYY-MM-DD" :clearable="false"></el-date-picker>
+        <el-date-picker
+          :editable="false"
+          v-model="aSchedule.date"
+          type="date"
+          placeholder="选择日期"
+          value-format="YYYY-MM-DD"
+          :clearable="false"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label="日记" prop="event">
         <el-input type="textarea" :rows="7" v-model="aSchedule.event"></el-input>
@@ -452,17 +398,36 @@ const beforeUpload = () =>
     </template>
   </el-dialog>
 
-  <el-drawer v-model="drawer" direction="btt" :before-close="beforeClose" :key="key" :close-on-click-modal="false"
-    :close-on-press-escape="false">
+  <el-drawer
+    v-model="drawer"
+    direction="btt"
+    :before-close="beforeClose"
+    :key="key"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+  >
     <template #header>
       <span v-if="!state.loading3" style="text-align: left">添加/编辑图片</span>
       <span v-else style="text-align: left; color: var(--el-color-primary)" :class="{ shake: disabled }">上传中，请稍候</span>
     </template>
     <template #default>
-      <el-upload ref="upload" v-model:file-list="currentFileList" action="/ache/calendar/add-picture"
-        list-type="picture-card" multiple :auto-upload="true" :data="{ pid: state.showIndex }" accept="image/*"
-        method="put" :on-remove="onRemove" :before-remove="beforeRemove" :on-error="onError" :on-success="onSuccess"
-        :before-upload="beforeUpload" :headers="cookie">
+      <el-upload
+        ref="upload"
+        v-model:file-list="currentFileList"
+        action="/ache/calendar/add-picture"
+        list-type="picture-card"
+        multiple
+        :auto-upload="true"
+        :data="{ pid: state.showIndex }"
+        accept="image/*"
+        method="put"
+        :on-remove="onRemove"
+        :before-remove="beforeRemove"
+        :on-error="onError"
+        :on-success="onSuccess"
+        :before-upload="beforeUpload"
+        :headers="cookie"
+      >
         <el-icon>
           <Plus />
         </el-icon>
@@ -494,7 +459,7 @@ const beforeUpload = () =>
       }
 
       .hasSchedules::before {
-        content: "";
+        content: '';
         position: absolute;
         width: 18px;
         height: 2px;
@@ -545,7 +510,7 @@ const beforeUpload = () =>
       display: inline-block;
 
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         background: lightblue;
         border-radius: 50%;
@@ -619,7 +584,6 @@ const beforeUpload = () =>
 }
 
 @keyframes shake {
-
   10%,
   90% {
     transform: translate3d(-1px, 0, 0);
@@ -712,7 +676,7 @@ const beforeUpload = () =>
       display: none !important;
     }
 
-    .el-upload-list__item-actions span+span {
+    .el-upload-list__item-actions span + span {
       margin-left: 0;
     }
   }

@@ -1,20 +1,20 @@
 <script setup>
-import Diary from "./components/diary.vue";
-import Login from "./components/login.vue";
-import { onBeforeMount, ref, watch } from "vue";
-import { useStore } from "vuex";
-const store = useStore();
-const isLogin = ref(false);
-const owner = ref("");
-store.dispatch("user/login").then((rst) => {
-  if (rst) setAndLogin(rst);
-});
-const whetherLogin = (rst) => setAndLogin(rst);
+import Diary from './components/diary.vue'
+import Login from './components/login.vue'
+import { onBeforeMount, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+const store = useStore()
+const isLogin = ref(false)
+const owner = ref('')
+store.dispatch('user/login').then((rst) => {
+  if (rst) setAndLogin(rst)
+})
+const whetherLogin = (rst) => setAndLogin(rst)
 const setAndLogin = (rst) => {
-  document.title = rst.data.name + "的日记本";
-  owner.value = rst.data;
-  isLogin.value = true;
-};
+  document.title = rst.data.name + '的日记本'
+  owner.value = rst.data
+  isLogin.value = true
+}
 </script>
 
 <template>
