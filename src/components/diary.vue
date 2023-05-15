@@ -329,7 +329,7 @@ const beforeUpload = () => {
         :type="['success', 'info', 'error', 'warning'][Math.floor(Math.random() * 4)]"
         @click="showOperations(item.id, hasComment(item.id), hasPicture(item.id))"
       >
-        <span>{{ item.event }}</span>
+        <span style="white-space: pre-wrap">{{ item.event }}</span>
         <span class="time" v-if="item.time" :class="{ 'time-has': hasPicture(item.id) }">
           {{ item.time }}
         </span>
@@ -340,7 +340,6 @@ const beforeUpload = () => {
           <span class="edit" @click.stop="displayByEdit(item)">编辑</span>
           <span class="exchange" @click.stop="exchange(item)">交换</span>
           <span class="delete" @click.stop="deleteSchedule(item.id)">删除</span>
-
           <span class="comment" @click.stop="displayByComment(item)">评论</span>
           <span class="addPic" @click.stop="showDrawer()">图片</span>
         </div>
