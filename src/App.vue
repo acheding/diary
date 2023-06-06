@@ -26,8 +26,11 @@ const setAndLogin = (rst) => {
 #app {
   position: absolute;
   width: 100%;
+  max-width: 480px;
   height: 100%;
   padding: 16px;
   background-color: #fff;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
