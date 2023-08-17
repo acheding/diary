@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.9.3",
+    "http-proxy-middleware": "^2.0.6",
     "vite": "^2.6.4"
   }
 }
