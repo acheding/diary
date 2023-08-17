@@ -10,7 +10,7 @@ const formInfo = ref({
 })
 const form = ref(null)
 const rules = reactive({
-  user: [{ required: true, message: '请输入用户', trigger: ['blur', 'change'] }],
+  user: [{ required: true, message: '请输入帐号', trigger: ['blur', 'change'] }],
   pwd: [{ required: true, message: '请输入密码', trigger: ['blur', 'change'] }],
 })
 const emit = defineEmits(['whetherLogin'])
@@ -43,7 +43,7 @@ const submitForm = () => {
       <img src="/login.png" style="height: 20px; width: 40px; vertical-align: -16%" />
     </template>
     <el-form :model="formInfo" ref="form" :rules="rules">
-      <el-form-item label="用户" prop="user">
+      <el-form-item label="帐号" prop="user">
         <el-input autofocus v-model="formInfo.user" clearable v-on:keyup.enter="submitForm"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="pwd">
