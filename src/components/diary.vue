@@ -352,7 +352,9 @@ const beforeUpload = () => {
       </div>
       <div class="comments" v-show="state.showIndex === item.id && oneComment.length" v-loading="state.loading2">
         <div class="oneComment" v-for="(one, index) in JSON.parse(JSON.stringify(oneComment))">
-          <span>评论{{ index + 1 }}（{{ one.address }}）：{{ one.comment }}</span>
+          <span
+            >评论{{ index + 1 }}<span v-if="one.address">（{{ one.address }}）</span>：{{ one.comment }}</span
+          >
           <span class="commentDel" @click.stop="deleteComment(one.id, item.id)">删除</span>
         </div>
       </div>
