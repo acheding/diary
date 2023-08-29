@@ -2,7 +2,12 @@
   "rewrites": [
     {
       "source": "/ache/(.*)",
-      "destination": "/api/proxy",
+      "destination": "/api/proxy"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/ache/(.*)",
       "headers": [
         {
           "key": "X-Real-IP",
