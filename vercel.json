@@ -1,7 +1,8 @@
 {
-  "headers": [
+  "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/ache/(.*)",
+      "destination": "/api/proxy",
       "headers": [
         {
           "key": "X-Real-IP",
@@ -16,12 +17,6 @@
           "value": "$http_host"
         }
       ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/ache/(.*)",
-      "destination": "/api/proxy"
     }
   ]
 }
