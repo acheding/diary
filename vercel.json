@@ -1,13 +1,8 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/ache(.*)",
-      "headers": {
-        "X-Real-IP": "$remote_addr",
-        "X-Forwarded-For": "$proxy_add_x_forwarded_for",
-        "Host": "zhang.beer"
-      },
-      "dest": "https://zhang.beer/ache$1"
+      "source": "/ache/(.*)",
+      "destination": "/api/proxy"
     }
   ]
 }
