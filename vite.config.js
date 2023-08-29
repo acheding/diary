@@ -21,6 +21,7 @@ export default defineConfig(({ command, mode }) => {
         '/ache': {
           target: 'https://zhang.beer/',
           // target: "http://localhost:8080/",
+          secure: false, // 跳过https验证
           pathRewrite: {
             '^/ache': '',
           },

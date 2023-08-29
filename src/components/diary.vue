@@ -204,7 +204,6 @@ const deleteComment = async (id, pid) => {
   })
   updateComments(pid)
   getALLComments()
-  oneComment.value = res.data
 }
 
 const getALLComments = async () => {
@@ -330,9 +329,13 @@ const beforeUpload = () => {
         @click="showOperations(item.id, hasComment(item.id), hasPicture(item.id))"
       >
         <span style="white-space: pre-wrap">{{ item.event }}</span>
-        <span class="time" v-if="item.time" :class="{ 'time-has': hasPicture(item.id) }">
-          {{ item.time }}
+        <span class="suffix">
+          <span class="time" v-if="item.time" :class="{ 'time-has': hasPicture(item.id) }">
+            {{ item.time }}
+          </span>
+          <span v-if="item.address"> @ {{ item.address }}</span>
         </span>
+
         <span class="tag" v-if="hasComment(item.id)">
           {{ hasComment(item.id) }}
         </span>
@@ -349,7 +352,7 @@ const beforeUpload = () => {
       </div>
       <div class="comments" v-show="state.showIndex === item.id && oneComment.length" v-loading="state.loading2">
         <div class="oneComment" v-for="(one, index) in JSON.parse(JSON.stringify(oneComment))">
-          <span>评论{{ index + 1 }}：{{ one.comment }}</span>
+          <span>评论{{ index + 1 }}（{{ one.address }}）：{{ one.comment }}</span>
           <span class="commentDel" @click.stop="deleteComment(one.id, item.id)">删除</span>
         </div>
       </div>
@@ -501,28 +504,30 @@ const beforeUpload = () => {
         margin: 5px 0;
       }
     }
-
-    .time {
-      position: relative;
-      width: 48px;
-      text-align: right;
+    .suffix {
       display: inline-block;
+      .time {
+        position: relative;
+        width: 48px;
+        text-align: right;
+        display: inline-block;
 
-      &::before {
-        content: '';
-        position: absolute;
-        background: lightblue;
-        border-radius: 50%;
-        top: calc(50% - 3px);
-        left: 8px;
-        width: 6px;
-        height: 6px;
+        &::before {
+          content: '';
+          position: absolute;
+          background: lightblue;
+          border-radius: 50%;
+          top: calc(50% - 3px);
+          left: 8px;
+          width: 6px;
+          height: 6px;
+        }
       }
-    }
 
-    .time-has {
-      &::before {
-        background: rgb(23, 210, 23);
+      .time-has {
+        &::before {
+          background: rgb(23, 210, 23);
+        }
       }
     }
 
