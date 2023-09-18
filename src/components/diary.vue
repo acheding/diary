@@ -361,7 +361,7 @@ const beforeUpload = () => {
     </div>
   </div>
 
-  <el-dialog v-model="state.showDialog" custom-class="my-dialog general">
+  <el-dialog v-model="state.showDialog" custom-class="my-dialog general" append-to-body>
     <template #header>
       <span>编辑日记</span>
     </template>
@@ -385,7 +385,7 @@ const beforeUpload = () => {
     </template>
   </el-dialog>
 
-  <el-dialog v-model="state.showDialog2" custom-class="my-dialog general">
+  <el-dialog v-model="state.showDialog2" custom-class="my-dialog general" append-to-body>
     <template #header>
       <span>评论</span>
     </template>
