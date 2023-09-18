@@ -3,6 +3,7 @@ import { computed, reactive, ref, onBeforeMount, toRaw, watch, nextTick } from '
 import axios from 'axios'
 import time from '@/utils/time'
 import { ElMessage, ElMessageBox } from 'element-plus'
+import * as imageConversion from 'image-conversion'
 
 const state = reactive({
   schedules: [],
@@ -299,8 +300,17 @@ const showDrawer = () => {
   drawer.value = true
   counter.value = currentFileList.value.length
 }
-const beforeUpload = () => {
+const beforeUpload = (file) => {
   state.loading3 = true
+  const listSize = file.size / 1024 < 200
+  return new Promise((resolve) => {
+    if (listSize) {
+      resolve(file)
+    }
+    imageConversion.compressAccurately(file, 200).then((res) => {
+      resolve(res)
+    })
+  })
 }
 </script>
 

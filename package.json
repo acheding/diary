@@ -10,6 +10,7 @@
     "@element-plus/icons-vue": "^2.0.9",
     "axios": "^0.27.2",
     "element-plus": "^2.2.11",
+    "image-conversion": "^2.1.1",
     "js-md5": "^0.7.3",
     "sass": "^1.54.0",
     "vue": "^3.2.16",
