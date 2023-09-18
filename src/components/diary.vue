@@ -130,7 +130,7 @@ const addSchedule = async () => {
     input.value = ''
     ElMessage.success('添加成功啦')
   } else {
-    ElMessage.error(props.owner.name + '没啥东西写吗')
+    ElMessage.warning(props.owner.name + '没啥东西写吗')
   }
 }
 const getSchedules = computed(() => {
@@ -409,6 +409,7 @@ const beforeUpload = () => {
     :key="key"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
+    append-to-body
   >
     <template #header>
       <span v-if="!state.loading3" style="text-align: left">添加/编辑图片</span>
